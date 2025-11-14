@@ -70,3 +70,78 @@ o
 Part 1 completed
 ============================================================================
 
+Part II – Docker Compose Setup
+Convert the Part-1 setup into a docker-compose.yaml-based solution using an environment variable file.
+Steps Performed
+
+Deleted existing containers from Part-1 docker rm -f csvserver
+
+Created csvserver.env
+This file contains the environment variables required by the csvserver container. CSVSERVER_BORDER=Orange
+
+Created docker-compose.yaml
+The compose file defines the csvserver service, exposes required ports, mounts input data, and loads environment variables.
+
+Verified application startup   docker-compose up -d
+
+Tested CSV Server
+Verified output at:http://<public-ip>:9393
+http://65.0.170.157:9393
+
+
+Saved all required files under the solution/ directory
+docker-compose.yaml,  csvserver.env , inputFile
+ 
+Committed and pushed to GitHub
+git add .
+git commit -m "Completed Part-2: docker-compose setup"
+git push
+PART 2 COMPLETED
+============================================================================
+Part III – Prometheus Integration
+Added Prometheus to monitor the csvserver container and graph the csvserver_records metric.
+
+Steps Performed
+Stopped and removed previous containers
+docker-compose down
+
+Added Prometheus container to docker-compose.yaml
+The Prometheus service runs on port 9090 and mounts a configuration file.
+
+Created prometheus.yml
+Configured Prometheus to scrape metrics from:  csvserver:9300/metrics
+ 
+Started both services:  docker-compose up -d
+
+Verified CSV Server metrics endpoint
+curl http://<public-ip>:9393/metrics
+curl http://65.0.170.157:9393/metrics
+
+Verified Prometheus UI
+Accessed in browser at: http://<public-ip>:9090
+http://65.0.170.157::9090
+
+Queried the metric in Prometheus
+
+Open Prometheus UI
+In the query box type: csvserver_records
+Click Execute
+Switch to Graph tab
+Observed a straight-line graph with value 7
+Screenshots of UI attached with mail
+
+
+Saved all files in solution folder
+docker-compose.yaml
+prometheus.yml
+csvserver.env
+inputFile
+
+Committed and pushed the changes
+git add .
+git commit -m "Completed Part-3: Added Prometheus monitoring"
+git push
+PART 3 COMPLETED
+============================================
+
+
