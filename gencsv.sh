@@ -1,17 +1,11 @@
 #!/bin/bash
-set -e
 
 start=$1
 end=$2
 
-if [ -z "$start" ] || [ -z "$end" ]; then
-  echo "Usage: ./gencsv.sh <start> <end>"
-  exit 1
-fi
+> inputFile   # create/empty file
 
-> inputFile
-
-for (( i=$start; i<=$end; i++ ))
-do
-  echo "$i, $((RANDOM % 300))" >> inputFile
+for i in $(seq $start $end); do
+    echo "$i, $RANDOM" >> inputFile
 done
+

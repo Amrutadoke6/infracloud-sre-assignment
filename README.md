@@ -1,36 +1,72 @@
 # Part 1 - CSVServer Solution
 
-### Commands executed:
+#This README contains all the commands executed to complete Part-1 of the assignment.
+1. Pulled required Docker images
+docker pull infracloudio/csvserver:latest
+docker pull prom/prometheus:v2.45.2
+2. Tried running the csvserver container (failed due to missing input file)
+docker run -d --name csvserver infracloudio/csvserver:latest
+docker logs csvserver
+docker rm -f csvserver
+3. Created script to generate inputFile
+Created gencsv.sh, made it executable, and generated the file:
+nano gencsv.sh
+chmod +x gencsv.sh
+./gencsv.sh 2 8
+cat inputFile
+This produced a file named inputFile with 7 entries (index 2 to 8)
+4. Ran the container with inputFile mounted
+docker run -d \
+  --name csvserver \
+  -v "$PWD/inputFile:/csvserver/inputdata" \
+  -p 9393:9300 \
+  infracloudio/csvserver:latest
 
-1. Pull images:
-   docker pull infracloudio/csvserver:latest
-   docker pull prom/prometheus:v2.45.2
+5. Checked the port on which the application listens
+docker exec -it csvserver bash
+netstat -tulnp
+exit
 
-2. Tried running container:
-   docker run -d --name csvsrv_test infracloudio/csvserver:latest
+Service was listening on port 9300.
 
-3. Found container failing because inputdata file missing.
+Stopped the container: docker rm -f csvserver
 
-4. Created CSV generator script:
-   ./gencsv.sh 2 8
+6. Ran the container with correct port mapping and border color
+docker run -d \
+  --name csvserver \
+  -v "$PWD/inputFile:/csvserver/inputdata" \
+  -p 9393:9300 \
+  -e CSVSERVER_BORDER=Orange \
+  infracloudio/csvserver:latest
+Application accessible at:
+http://localhost:9393
+http://65.0.170.157:9393/
+ web output is attached with mail
 
-5. Generated inputFile with 7 entries.
+7. Saved required outputs
+file name is part-1-cmd
+command
 
-6. Ran working container with inputFile mounted:
-   docker run -d \
-     --name csvserver \
-     -v "$PWD/inputFile":/csvserver/inputdata \
-     -p 9393:9300 \
-     -e CSVSERVER_BORDER=Orange \
-     infracloudio/csvserver:latest
+echo 'docker run -d --name csvserver -v "$PWD/inputFile:/csvserver/inputdata" -p 9393:9300 -e CSVSERVER_BORDER=Orange infracloudio/csvserver:latest' > part-1-cmd
 
-7. Verified output:
-   curl http://localhost:9393
 
-### Required Files
-- gencsv.sh
-- inputFile
-- part-1-cmd
-- part-1-output
-- part-1-logs
+part-1-output
+curl -o ./part-1-output http://localhost:9393/raw
+
+part-1-logs
+docker logs csvserver >& part-1-logs
+
+
+Files present in the solution directory for part 1
+gencsv.sh
+inputFile
+part-1-cmd
+part-1-output
+part-1-logs
+README.md
+
+
+o
+Part 1 completed
+============================================================================
 
