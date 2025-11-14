@@ -1,0 +1,10 @@
+--2025-11-14 03:26:58--  http://65.0.170.157:9393/raw
+Connecting to 65.0.170.157:9393... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 128 [text/plain]
+Saving to: ‘raw’
+
+     0K                                                       100% 18.8M=0s
+
+2025-11-14 03:26:58 (18.8 MB/s) - ‘raw’ saved [128/128]
+
